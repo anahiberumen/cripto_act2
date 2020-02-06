@@ -167,10 +167,126 @@ def vigenere_descifrar(mensaje, llave):
     return "kk4"
 
 def playfair_cifrar(mensaje):
-    return "kk5"
+    resultado = ""
+    i = 0
+    while i < len(mensaje):
+        m1 = ord(mensaje[i])-97
+        if i+1 == len(mensaje):
+            m2 = ord('x')-97
+        else:
+            m2 = ord(mensaje[i+1])-97
+        if (m1 <= 25 and m1 >= 0) and (m2 <= 25 and m2 >= 0):
+            fila_m1 = int(m1/5) 
+            columna_m1 = m1 % 5
+
+            if m1 == ord('k')-97:
+                fila_m1 = fila_m1 - 1
+                columna_m1 = 4 - columna_m1
+            elif m1 >= ord('j')-97:
+                if columna_m1 == 0:
+                    columna_m1 = 5
+                    fila_m1 = fila_m1 - 1
+                columna_m1 = columna_m1 - 1
+
+            fila_m2 = int(m2/5) 
+            columna_m2 = m2 % 5
+
+            if m2 == ord('k')-97:
+                fila_m2 = fila_m2 - 1
+                columna_m2 = 4 - columna_m2
+            elif m2 >= ord('j')-97:
+                if columna_m2 == 0:
+                    columna_m2 = 5
+                    fila_m2 = fila_m2 - 1
+                columna_m2 = columna_m2 - 1
+            
+            if fila_m1 == fila_m2 and columna_m1 == columna_m2:
+                columna_m2 = (columna_m2+1)%5
+                fila_m2 = (fila_m2+1)%5
+                i = i-1
+
+            if fila_m1 == fila_m2:
+                c1 = (5*fila_m1)+((columna_m1+1)%5)
+                c2 = (5*fila_m2)+((columna_m2+1)%5)
+                resultado = resultado + chr((c1 if c1 <=8 else (c1+1))+97)
+                resultado = resultado + chr((c2 if c2 <=8 else (c2+1))+97)
+            elif columna_m1 == columna_m2:
+                c1 = (5*((fila_m1+1)%5))+columna_m1
+                c2 = (5*((fila_m2+1)%5))+columna_m2
+                resultado = resultado + chr((c1 if c1 <=8 else (c1+1))+97)
+                resultado = resultado + chr((c2 if c2 <=8 else (c2+1))+97)
+            else:
+                c1 = (5*fila_m1)+(4-columna_m1)
+                c2 = (5*fila_m2)+(4-columna_m2)
+                resultado = resultado + chr((c1 if c1 <=8 else (c1+1))+97)
+                resultado = resultado + chr((c2 if c2 <=8 else (c2+1))+97)
+
+            i = i+2
+        
+        else:
+            i = i+1
+    return resultado
 
 def playfair_descifrar(mensaje):
-    return "kk5"
+    resultado = ""
+    i = 0
+    while i < len(mensaje):
+        m1 = ord(mensaje[i])-97
+        if i+1 == len(mensaje):
+            m2 = ord('x')-97
+        else:
+            m2 = ord(mensaje[i+1])-97
+        if (m1 <= 25 and m1 >= 0) and (m2 <= 25 and m2 >= 0):
+            fila_m1 = int(m1/5) 
+            columna_m1 = m1 % 5
+
+            if m1 == ord('k')-97:
+                fila_m1 = fila_m1 - 1
+                columna_m1 = 4 - columna_m1
+            elif m1 >= ord('j')-97:
+                if columna_m1 == 0:
+                    columna_m1 = 5
+                    fila_m1 = fila_m1 - 1
+                columna_m1 = columna_m1 - 1
+
+            fila_m2 = int(m2/5) 
+            columna_m2 = m2 % 5
+
+            if m2 == ord('k')-97:
+                fila_m2 = fila_m2 - 1
+                columna_m2 = 4 - columna_m2
+            elif m2 >= ord('j')-97:
+                if columna_m2 == 0:
+                    columna_m2 = 5
+                    fila_m2 = fila_m2 - 1
+                columna_m2 = columna_m2 - 1
+            
+            if fila_m1 == fila_m2 and columna_m1 == columna_m2:
+                columna_m2 = (columna_m2+1)%5
+                fila_m2 = (fila_m2+1)%5
+                i = i-1
+
+            if fila_m1 == fila_m2:
+                c1 = (5*fila_m1)+((columna_m1-1)%5)
+                c2 = (5*fila_m2)+((columna_m2-1)%5)
+                resultado = resultado + chr((c1 if c1 <=8 else (c1+1))+97)
+                resultado = resultado + chr((c2 if c2 <=8 else (c2+1))+97)
+            elif columna_m1 == columna_m2:
+                c1 = (5*((fila_m1-1)%5))+columna_m1
+                c2 = (5*((fila_m2-1)%5))+columna_m2
+                resultado = resultado + chr((c1 if c1 <=8 else (c1+1))+97)
+                resultado = resultado + chr((c2 if c2 <=8 else (c2+1))+97)
+            else:
+                c1 = (5*fila_m1)+(4-columna_m1)
+                c2 = (5*fila_m2)+(4-columna_m2)
+                resultado = resultado + chr((c1 if c1 <=8 else (c1+1))+97)
+                resultado = resultado + chr((c2 if c2 <=8 else (c2+1))+97)
+
+            i = i+2
+        
+        else:
+            i = i+1
+    return resultado
 
 def hill_cifrar(mensaje):
     return "kk6"
