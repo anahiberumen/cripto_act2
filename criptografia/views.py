@@ -5,7 +5,7 @@ def proceso(request):
     if request.method == 'POST':
         resultado =""
         mensaje = (request.POST.get("mensaje")).lower()
-        llave = request.POST.get("llave")
+        llave = (request.POST.get("llave")).lower()
         opcion = request.POST.get("opcion")
         metodo = request.POST.get("metodo")
 #------------------------------------------------------------------
@@ -30,10 +30,11 @@ def proceso(request):
 #-------------------------------------------------------------------
 
         elif metodo == "4":
+            
             if opcion == "cifrar":
-                resultado = vigenere_cifrar(mensaje, llave)
+                resultado = vigenere_cifrar(mensaje.replace(" ",""), llave.replace(" ",""))
             else:
-                resultado = vigenere_descifrar(mensaje, llave)
+                resultado = vigenere_descifrar(mensaje.replace(" ", ""), llave.replace(" ",""))
 
 
         elif metodo == "5":
@@ -161,10 +162,46 @@ def alberti_descifrar(mensaje, llave):
     return resultado
 
 def vigenere_cifrar(mensaje, llave):
-    return "kk4"
+    abecedario = "abcdefghijklmnopqrstuvwxyz"
+    resultado = ""
+    llavePos = []
+
+    for j in llave:
+        llavePos.append(abecedario.find(j))
+    
+    i = 0
+    for k in mensaje:
+        if i ==  len(llavePos):
+            i = 0
+        pos = abecedario.find(k) + llavePos[i]
+
+        if pos > 25:
+            pos = pos-26
+        
+        resultado = resultado + abecedario[pos]
+        i = i +1
+    return resultado
 
 def vigenere_descifrar(mensaje, llave):
-    return "kk4"
+    abecedario = "abcdefghijklmnopqrstuvwxyz"
+    resultado = ""
+    llavePos = []
+
+    for j in llave:
+        llavePos.append(abecedario.find(j))
+    
+    i = 0
+    for k in mensaje:
+        if i ==  len(llavePos):
+            i = 0
+        pos = abecedario.find(k) - llavePos[i]
+
+        if pos > 25:
+            pos = pos+26
+        
+        resultado = resultado + abecedario[pos]
+        i = i +1
+    return resultado
 
 def playfair_cifrar(mensaje):
     return "kk5"
