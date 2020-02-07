@@ -119,7 +119,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (   
-    'C:/Users/anahi/Desktop/Criptografía/Actividad_2/Actividad2/static/',
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static/'),
 )
