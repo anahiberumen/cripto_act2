@@ -16,7 +16,15 @@ def proceso(request):
         if not mensaje:
             resultado = "El mensaje no puede estar vacio"
             metodo = "0"
-
+        try:
+            dimension = int(dimension)
+            if len(llave) != dimension*dimension:
+                resultado = "La llave debe tener una longitud correspondiente a [dimensión * dimensión]"
+                metodo = "0"
+        except:
+            resultado = "La dimension debe ser un numero"
+            metodo = "0"
+        
 #------------------------------------------------------------------
         if metodo == "1":
             if opcion == "cifrar":
@@ -44,16 +52,16 @@ def proceso(request):
             if not llave:
                 resultado = "La llave no puede estar vacia"
             elif opcion == "cifrar":
-                resultado = vigenere_cifrar(mensaje, llave)
+                resultado = vigenere_cifrar(mensaje.replace(" ", ""), llave.replace(" ", ""))
             else:
                 resultado = vigenere_descifrar(mensaje.replace(" ", ""), llave.replace(" ",""))
 
 
         elif metodo == "5":
             if opcion == "cifrar":
-                resultado = playfair_cifrar(mensaje)
+                resultado = playfair_cifrar(mensaje.replace(" ", ""))
             else:
-                resultado = playfair_descifrar(mensaje)
+                resultado = playfair_descifrar(mensaje.replace(" ", ""))
 
 
         elif metodo == "6":
@@ -177,6 +185,7 @@ def vigenere_cifrar(mensaje, llave):
     resultado = ""
     llavePos = []
 
+    print(mensaje)
     for j in llave:
         llavePos.append(abecedario.find(j))
     
