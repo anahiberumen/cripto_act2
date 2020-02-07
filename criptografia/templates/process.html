@@ -5,13 +5,13 @@
 {% block content %}
 <div class="card text-white bg-dark mb-3 shadow-lg">
     <div class="card-header">
-        <h2>Actividad 2: Cifrar y descifrar</h2>
+        <h3>Actividad 2: Cifrar y descifrar</h3>
     </div>
     <div class="card-body">
         <form method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <h4><label for="metodo_id">Método</label></h4>
+                <h5><label for="metodo_id">Método</label></h5>
                 <select class="form-control" id="metodo_id" name="metodo">
                     <option value="1">Polybios</option>
                     <option value="2">César</option>
@@ -40,16 +40,16 @@
                 </div>
             </div>
             <div class="form-group hidden" id="dimension_opt_id">
-                <h4><label for="dimension_id">Dimension</label></h4>
-                <input type="number" class="form-control" id="dimension_id" name="dimension">
+                <h5><label for="dimension_id">Dimensión</label></h5>
+                <input type="number" class="form-control input-group-sm" id="dimension_id" name="dimension">
             </div>
             <div class="form-group">
-                <h4><label for="mensaje_id">Mensaje</label></h4>
-                <textarea class="form-control" id="mensaje_id" rows="2" name="mensaje"></textarea>
+                <h5><label for="mensaje_id">Mensaje</label></h5>
+                <textarea class="form-control input-group-sm" id="mensaje_id" rows="1" name="mensaje"></textarea>
             </div>
             <div class="form-group hidden" id="llave_opt_id">
-                <h4><label for="llave_id">Llave</label></h4>
-                <textarea class="form-control" id="llave_id" rows="2" name="llave"></textarea>
+                <h5><label for="llave_id">Llave</label></h5>
+                <textarea class="form-control" id="llave_id" rows="1" name="llave"></textarea>
             </div>
             <div>
                 <button type="submit" class="btn btn-primary float-right">Continuar</button>

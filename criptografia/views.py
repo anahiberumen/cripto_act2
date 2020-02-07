@@ -22,7 +22,7 @@ def proceso(request):
                 resultado = "La llave debe tener una longitud correspondiente a [dimensión * dimensión]"
                 metodo = "0"
         except:
-            resultado = "La dimension debe ser un numero"
+            resultado = "La dimensión debe ser un numero"
             metodo = "0"
         
 #------------------------------------------------------------------
