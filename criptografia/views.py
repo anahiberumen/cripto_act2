@@ -4,12 +4,19 @@ import codecs
 # Create your views here.
 def proceso(request):
     if request.method == 'POST':
-        resultado =""
+        resultado = ""
         mensaje = (request.POST.get("mensaje")).lower()
-        llave = request.POST.get("llave")
+        llave = request.POST.get("llave").lower()
         dimension = request.POST.get("dimension")
         opcion = request.POST.get("opcion")
         metodo = request.POST.get("metodo")
+
+        print(mensaje)
+        print(llave)
+        if not mensaje:
+            resultado = "El mensaje no puede estar vacio"
+            metodo = "0"
+
 #------------------------------------------------------------------
         if metodo == "1":
             if opcion == "cifrar":
@@ -25,14 +32,18 @@ def proceso(request):
 
 #------------------------------------------------------------------
         elif metodo == "3":
-            if opcion == "cifrar":
-                resultado = alberti_cifrar(mensaje, llave)
+            if not llave:
+                resultado = "La llave no puede estar vacia"
+            elif opcion == "cifrar":
+                resultado = alberti_cifrar(mensaje, llave.replace(" ",""))
             else:
-                resultado = alberti_descifrar(mensaje, llave)
+                resultado = alberti_descifrar(mensaje, llave.replace(" ",""))
 #-------------------------------------------------------------------
 
         elif metodo == "4":
-            if opcion == "cifrar":
+            if not llave:
+                resultado = "La llave no puede estar vacia"
+            elif opcion == "cifrar":
                 resultado = vigenere_cifrar(mensaje, llave)
             else:
                 resultado = vigenere_descifrar(mensaje, llave)
@@ -46,7 +57,9 @@ def proceso(request):
 
 
         elif metodo == "6":
-            if opcion == "cifrar":
+            if not llave:
+                resultado = "La llave no puede estar vacia"
+            elif opcion == "cifrar":
                 resultado = hill_cifrar(mensaje.replace(" ",""), dimension, llave.replace(" ",""))
             else:
                 resultado = hill_descifrar(mensaje.replace(" ",""), dimension, llave.replace(" ",""))

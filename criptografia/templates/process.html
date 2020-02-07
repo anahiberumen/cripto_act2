@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
 <div class="card text-white bg-dark mb-3 shadow-lg">
@@ -37,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden" id="dimension_opt_id">
                 <h4><label for="dimension_id">Dimension</label></h4>
                 <input type="number" class="form-control" id="dimension_id" name="dimension">
             </div>
@@ -45,15 +47,19 @@
                 <h4><label for="mensaje_id">Mensaje</label></h4>
                 <textarea class="form-control" id="mensaje_id" rows="2" name="mensaje"></textarea>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden" id="llave_opt_id">
                 <h4><label for="llave_id">Llave</label></h4>
                 <textarea class="form-control" id="llave_id" rows="2" name="llave"></textarea>
             </div>
             <div>
-                <button class="btn btn-danger">Reiniciar</button>
-                <button type="submit" class="btn btn-primary">Continuar</button>
+                <button type="submit" class="btn btn-primary float-right">Continuar</button>
+                <button type="reset" class="btn btn-danger float-right mr-2" id="reset_id" onclick="reset()">Reiniciar</button>
             </div>
         </form>
     </div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/mine.js' %}"></script>
+{% endblock scripts %}
