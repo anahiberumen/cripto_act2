@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import numpy as np
 import codecs
 # Create your views here.
 def proceso(request):
@@ -6,6 +7,7 @@ def proceso(request):
         resultado =""
         mensaje = (request.POST.get("mensaje")).lower()
         llave = request.POST.get("llave")
+        dimension = request.POST.get("dimension")
         opcion = request.POST.get("opcion")
         metodo = request.POST.get("metodo")
 #------------------------------------------------------------------
@@ -45,9 +47,9 @@ def proceso(request):
 
         elif metodo == "6":
             if opcion == "cifrar":
-                resultado = hill_cifrar(mensaje)
+                resultado = hill_cifrar(mensaje.replace(" ",""), dimension, llave.replace(" ",""))
             else:
-                resultado = hill_descifrar(mensaje)
+                resultado = hill_descifrar(mensaje.replace(" ",""), dimension, llave.replace(" ",""))
         
         return render(request, 'resultado.html', {'res': resultado})
 
@@ -90,7 +92,6 @@ def polybios_descifrar(mensaje):
 
             if (a == 1 and b >= 3) or (a > 1):
                 pos = pos + 1
-            print(pos)
             resultado = resultado + chr(pos + 97)
             i = i+1
         elif ord(mensaje[i]) == 32:
@@ -128,7 +129,6 @@ def alberti_cifrar(mensaje, llave):
     resultado = ""
     if len(llave) == 2:
         diff = abs((ord(llave[0]) - 97) - (ord(llave[1]) - 97))
-        print(diff)
         for c in mensaje:
             if ord(c) <= 122 and ord(c) >= 97:
                 numero = ord(c) - 97
@@ -146,7 +146,6 @@ def alberti_descifrar(mensaje, llave):
     resultado = ""
     if len(llave) == 2:
         diff = abs((ord(llave[0]) - 97) - (ord(llave[1]) - 97))
-        print(diff)
         for c in mensaje:
             if ord(c) <= 122 and ord(c) >= 97:
                 numero = ord(c) - 97
@@ -288,8 +287,118 @@ def playfair_descifrar(mensaje):
             i = i+1
     return resultado
 
-def hill_cifrar(mensaje):
-    return "kk6"
+def hill_cifrar(mensaje, dimension, llave):
+    resultado = ""
+    d = int(dimension)
+    tmp = ""
+    i = 0
+    for c in llave:
+        if i == d:
+            tmp = tmp + ";"
+            i = 0
 
-def hill_descifrar(mensaje):
-    return "kk6"
+        tmp = tmp + str(ord(c) - 97)
+        tmp = tmp + " "
+        i += 1
+    m_llave = np.matrix(tmp)
+
+    tmp = ""
+    for i in range(d):
+        tmp = tmp + '26 '
+        if i != d-1:
+            tmp = tmp + ';'
+
+    m_mod = np.matrix(tmp)
+
+    if np.linalg.det(m_llave) != 0:
+        if len(mensaje) % d != 0:
+            for j in range(d-(len(mensaje)%d)):
+                mensaje = mensaje + 'x'
+                
+        i = 0
+        j = 0
+        tmp = ""
+        while i < len(mensaje):
+            tmp = tmp + str(ord(mensaje[i]) - 97)
+            if j!=d-1:
+                tmp = tmp + " ;"
+
+            j = j + 1
+            i = i + 1
+            if j == d:
+                j = 0
+                m_tmp = np.matrix(tmp)
+                m_res = np.mod((m_llave * m_tmp), m_mod)
+                tmp = ""
+                for jgadsfkhadshhasg in range(d):
+                    resultado = resultado + chr(m_res.item(jgadsfkhadshhasg) + 97)
+
+    else:
+        return "Intenta con otra llave"
+    
+    return resultado
+
+def hill_descifrar(mensaje, dimension, llave):
+    resultado = ""
+    d = int(dimension)
+    tmp = ""
+    i = 0
+    for c in llave:
+        if i == d:
+            tmp = tmp + ";"
+            i = 0
+
+        tmp = tmp + str(ord(c) - 97)
+        tmp = tmp + " "
+        i += 1
+    m_llave = np.matrix(tmp)
+
+    tmp = ""
+    for i in range(d):
+        tmp = tmp + '26 '
+        if i != d-1:
+            tmp = tmp + ';'
+
+    m_mod = np.matrix(tmp)
+
+    if np.linalg.det(m_llave) != 0:
+        if len(mensaje) % d != 0:
+            for j in range(d-(len(mensaje)%d)):
+                mensaje = mensaje + 'x'
+                
+        i = 0
+        j = 0
+        tmp = ""
+        while i < len(mensaje):
+            tmp = tmp + str(ord(mensaje[i]) - 97)
+            if j!=d-1:
+                tmp = tmp + " ;"
+            j = j + 1
+            i = i + 1
+            if j == d:
+                j = 0
+                m_tmp = np.matrix(tmp)
+
+                mi_llave = (np.linalg.inv(m_llave).T * np.linalg.det(m_llave)).transpose()
+
+                mi_llave = np.mod(mi_llave, m_mod)
+
+                det = int(round((np.linalg.det(m_llave)%26),2)%26)
+                
+                n = 0
+                while (n*det)%26!=1:
+                    n = n+1
+                    if(n == 50000):
+                        return "No es posible decifrar el mensaje"
+                
+                mi_llave = np.mod((mi_llave * n).round(5), m_mod)
+
+                m_res = np.mod((mi_llave * m_tmp), m_mod)
+                tmp = ""
+                for hoho in range(d):
+                    resultado = resultado + chr(int(m_res.item(hoho)) + 97)
+
+    else:
+        return "Intenta con otra llave"
+    
+    return resultado
